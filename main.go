@@ -11,7 +11,7 @@ import (
 	_ "github.com/heroku/x/hmetrics/onload"
 )
 
-func verify() {
+func verify() string {
 	url := "https://api.line.me/v1/oauth/verify"
 
 	req, _ := http.NewRequest("GET", url, nil)
@@ -25,6 +25,7 @@ func verify() {
 
 	fmt.Println(res)
 	fmt.Println(string(body))
+	return string(body)
 }
 
 func main() {
@@ -47,6 +48,10 @@ func main() {
 	})
 	router.POST("/bot", func(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "Hello"})
+	})
+
+	router.GET("/verify", func(c *gin.Context) {
+		c.JSON(200, verify())
 	})
 
 	router.Run(":" + port)
