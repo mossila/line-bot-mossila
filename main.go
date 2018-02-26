@@ -24,6 +24,9 @@ func main() {
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tmpl.html", nil)
 	})
+	router.GET("/bot", func(c *gin.Context) {
+		c.JSON(200, gin.H{"message": "Hello"})
+	})
 
 	router.Run(":" + port)
 }
