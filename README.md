@@ -37,3 +37,10 @@ or
 For more information about using Go on Heroku, see these Dev Center articles:
 
 - [Go on Heroku](https://devcenter.heroku.com/categories/go)
+
+
+
+## Validate token 
+```
+curl -X GET \-H 'Authorization: Bearer WTiCfuhDuI3IWEeYdyQsnEiTwG2Hvf/vdQoNd4bE47ZdGLk66tp2WriXq2vxi2VH3/PxUToTFympfewhp5dADEOWDS6GeFHlmw4dFi393T8onJXmDpACsqZSLM49aUkBgl+a9JmevOAkasIWMNE12QdB04t89/1O/w1cDnyilFU=' \https://api.line.me/v1/oauth/verify
+```
