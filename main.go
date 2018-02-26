@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -11,7 +12,13 @@ import (
 	_ "github.com/heroku/x/hmetrics/onload"
 )
 
-func verify() string {
+// VerifyResult From line
+type VerifyResult struct {
+	Mid       string `json:"mid"`
+	ChannelID int64  `json:"channelId"`
+}
+
+func verify() *VerifyResult {
 	url := "https://api.line.me/v1/oauth/verify"
 
 	req, _ := http.NewRequest("GET", url, nil)
@@ -25,7 +32,9 @@ func verify() string {
 
 	fmt.Println(res)
 	fmt.Println(string(body))
-	return string(body)
+	result := &VerifyResult{}
+	json.Unmarshal(body, result)
+	return result
 }
 
 func main() {
