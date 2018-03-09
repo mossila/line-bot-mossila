@@ -18,6 +18,20 @@ type VerifyResult struct {
 	ChannelID int64  `json:"channelId"`
 }
 
+type replyObject struct {
+	replyToken string
+	messages   []ResponseMessage
+}
+type Message struct {
+	Id string
+	ResponseMessage
+}
+
+type ResponseMessage struct {
+	Type string
+	Text string
+}
+
 func verify() *VerifyResult {
 	url := "https://api.line.me/v1/oauth/verify"
 
@@ -35,6 +49,40 @@ func verify() *VerifyResult {
 	result := &VerifyResult{}
 	json.Unmarshal(body, result)
 	return result
+}
+
+// BotPostMessage Line with call with this format
+type BotPostMessage struct {
+	Events []PostEvent
+}
+
+// PostEvent Event inside events array
+type PostEvent struct {
+	ReplyToken string
+	Type       string
+	timestamp  int64
+	source     Source
+	message    Message
+}
+
+// Source source of message contain user id
+type Source struct {
+	Type   string
+	UserID string
+}
+
+func bot(c *gin.Context) {
+	var pm BotPostMessage
+	if err := c.BindJSON(&pm); err != nil {
+		if pm.Events[0].ReplyToken != "" {
+			m := ResponseMessage{Type: "text", Text: "Hello"}
+			ms := []ResponseMessage{m}
+			c.JSON(200, replyObject{
+				replyToken: pm.Events[0].ReplyToken,
+				messages:   ms,
+			})
+		}
+	}
 }
 
 func main() {
