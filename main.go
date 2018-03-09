@@ -19,17 +19,21 @@ type VerifyResult struct {
 }
 
 type replyObject struct {
-	replyToken string
-	messages   []ResponseMessage
-}
-type Message struct {
-	Id string
-	ResponseMessage
+	ReplyToken string            `json:"replyToken"`
+	Messages   []ResponseMessage `json:"messages"`
 }
 
+// Message message post from line
+type Message struct {
+	ID   string `json:"id"`
+	Type string `json:"type"`
+	Text string `json:"text"`
+}
+
+// ResponseMessage response msg to line
 type ResponseMessage struct {
-	Type string
-	Text string
+	Type string `json:"type"`
+	Text string `json:"text"`
 }
 
 func verify() *VerifyResult {
@@ -53,16 +57,16 @@ func verify() *VerifyResult {
 
 // BotPostMessage Line with call with this format
 type BotPostMessage struct {
-	Events []PostEvent
+	Events []PostEvent `json:"events"`
 }
 
 // PostEvent Event inside events array
 type PostEvent struct {
-	ReplyToken string
-	Type       string
-	timestamp  int64
-	source     Source
-	message    Message
+	ReplyToken string  `json:"replyToken"`
+	Type       string  `json:"type"`
+	Timestamp  int64   `json:"timestamp"`
+	Source     Source  `json:"soruce"`
+	Nessage    Message `json:"message"`
 }
 
 // Source source of message contain user id
@@ -78,8 +82,8 @@ func bot(c *gin.Context) {
 			m := ResponseMessage{Type: "text", Text: "Hello"}
 			ms := []ResponseMessage{m}
 			c.JSON(200, replyObject{
-				replyToken: pm.Events[0].ReplyToken,
-				messages:   ms,
+				ReplyToken: pm.Events[0].ReplyToken,
+				Messages:   ms,
 			})
 		}
 	}
