@@ -86,6 +86,8 @@ func bot(c *gin.Context) {
 				Messages:   ms,
 			})
 		}
+	} else {
+		c.JSON(400, err)
 	}
 }
 
